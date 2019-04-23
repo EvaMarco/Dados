@@ -6,44 +6,63 @@ import random
 
 class MainApp(Tk):
     size = '475x565'
-    __cerodados = '0'
-    dadosa0 = {4: 0, 6: 0, 8: 0, 10: 0, 12: 0, 20: 0}
+    resultado = 0
 
     def __init__(self):
+        # Para no tener que poner .ttk en todos lados.
         Tk.__init__(self)
+        # Tamaño de la ventana, nombre, color de fondo y que no se pueda modificar el tamaño.
         self.geometry(self.size)
         self.title('Simulador de Dados')
         self.configure(bg='#ECECEC')
         self.resizable(0, 0)
 
-        self.dados4 = StringVar(value='')
-        # self.dados4.trace('w', self.validate(self.dados4.get()))
-        self.dados6 = StringVar(value='')
-        # self.dados6.trace('w', self.validate(self.dados6.get()))
-        self.dados8 = StringVar(value='')
-        # self.dados8.trace('w', self.validate(self.dados8.get()))
-        self.dados10 = StringVar(value='')
-        # self.dados10.trace('w', self.validate(self.dados10.get()))
-        self.dados12 = StringVar(value='')
-        # self.dados12.trace('w', self.validate(self.dados12.get()))
-        self.dados20 = StringVar(value='')
-        # self.dados20.trace('w', self.validate(self.dados20.get()))
-        self.seleccion = {4: self.dados4, 6: self.dados6, 8: self.dados8, 10: self.dados10, 12: self.dados12,
-                          20: self.dados20}
+        # Creamos las variables del número de dados. Y le pedimos q nos de el valor para meterlo en el diccionario.
+        self.dados4 = IntVar(value=0)
+        self.d4 = self.dados4.get()
 
+        self.dados6 = IntVar(value=0)
+        self.d6 = self.dados6.get()
+
+        self.dados8 = IntVar(value=0)
+        self.d8 = self.dados8.get()
+
+        self.dados10 = IntVar(value=0)
+        self.d10 = self.dados10.get()
+
+        self.dados12 = IntVar(value=0)
+        self.d12 = self.dados12.get()
+
+        self.dados20 = IntVar(value=0)
+        self.d20 = self.dados20.get()
+
+        # Aqui se pinta la pantalla, esta abajo más especificada.
         self.createlayout()
-    '''
-    def validate(self, dados):
-        ndados = dados
-        try:
-            int(ndados)
-            self.__cerodados = ndados
-        except:
-            # self.dados.set(self.__cerodados)
-            pass
-    '''
+
+        # El diccionario que no se actualiza, no se donde lo tengo que poner para que lo haga.
+        self.pooldados = {4: self.d4, 6: self.d6, 8: self.d8, 10: self.d10, 12: self.d12, 20: self.d20}
+
+
+
+    def tirada(self, *args):
+
+        resultado = 0
+
+        for i in self.pooldados:
+
+            value = self.pooldados.get(i)
+            if value != 0:
+
+                for j in range(value):
+                    number = random.randint(1, i)
+                    resultado += number
+        print(resultado)
+        print(self.pooldados)
+        return resultado
 
     def createlayout(self):
+
+        # Aqui aparecen las etiquetas, las imagenes y demás.
 
         self.lbldados = ttk.Label(self, text='Numero de dados:').place(x=150, y=10)
 
@@ -77,15 +96,20 @@ class MainApp(Tk):
         self.canvas = Label(self, image=self.photod20)
         self.canvas.place(x=10, y=472)
 
-    def tirada(self):
-        tirada = 0
-        for i in range(0, int(self.seleccion.values())+1):
-            tirada += random()
+        # El botón que lanza la función tirar dados.
 
+        self.boton = ttk.Button(self, text="Tirar", command=self.tirada).place(x=350, y=100)
+
+        # La etiqueta donde quiero que salga el resultado pero no lo hace.
+
+        self.lblresultado = ttk.Label(self, textvariable=self.resultado, foreground="yellow",
+                                      background="black") .place(x=350, y=200)
+
+    # Bucle principal.
     def start(self):
         self.mainloop()
 
-
+# Para que se ejecute desde la aplicación, sin tener que escribirlo en el shell.
 if __name__ == '__main__':
     app = MainApp()
     app.start()
