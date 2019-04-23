@@ -10,9 +10,7 @@ print(resultado)
 '''
 for i in pooldados:
     value = pooldados.get(i)
-    if value == 0:
-        pass
-    else:
+    if value != 0:
         for j in range(value):
             number = random.randint(1, i)
             resultado += number
