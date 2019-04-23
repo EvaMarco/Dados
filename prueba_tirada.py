@@ -9,5 +9,5 @@ for i in pooldados:
             number = random.randint(1, i)
             resultado += number
             print(number)
-            print('El resultado parcial es ', resultado)
+
 print('El resultado total es', resultado)
