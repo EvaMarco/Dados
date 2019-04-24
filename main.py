@@ -37,6 +37,7 @@ class MainApp(Tk):
         self.values = [self.dados4, self.dados6, self.dados8, self.dados10, self.dados12, self.dados20]
 
         self.label = IntVar()
+        self.label2 = StringVar()
 
         # Aqui se pinta la pantalla, esta abajo más especificada.
         self.createlayout()
@@ -44,26 +45,27 @@ class MainApp(Tk):
     def tirada(self, *args):
 
         self.pooldados = {k: v.get()for k, v in zip(self.keys, self.values)}
+        self.tiradas=[]
 
         for i in self.pooldados:
-
             value = self.pooldados.get(i)
             if value != 0:
+                self.tiradas.append('d')
+                self.tiradas.append(i)
+                self.tiradas.append(':')
 
                 for j in range(value):
+
                     number = random.randint(1, i)
                     self.resultado += number
+                    self.tiradas.append(number)
                     print(number)
         self.label.set(self.resultado)
         print(self.resultado)
         print(self.pooldados)
-        ttk.Label(self, text='Resultado').place(x=350, y=180)
+        print(self.tiradas)
+        self.label2.set(self.tiradas)
 
-        self.lblresultado = ttk.Label(self, textvariable=self.label, foreground="yellow",
-                                      background="black") .place(x=350, y=200)
-
-        return self.resultado
-    
     def createlayout(self):
 
         # Aqui aparecen las etiquetas, las imagenes y demás.
@@ -102,13 +104,16 @@ class MainApp(Tk):
 
         # El botón que lanza la función tirar dados.
 
-        self.boton = ttk.Button(self, text="Tirar", command=self.tirada).place(x=350, y=100)
+        self.boton = ttk.Button(self, text="Tirar", command=self.tirada).place(x=300, y=340)
 
         # La etiqueta donde quiero que salga el resultado pero no lo hace.
-        ttk.Label(self, text='Resultado').place(x=280, y=550)
+        ttk.Label(self, text='Resultado').place(x=300, y=380)
 
-        self.lblresultado = ttk.Label(self, textvariable=self.resultado, foreground="yellow",
-                                      background="black") .place(x=350, y=200)
+        self.lblresultado = ttk.Label(self, textvariable=self.label, foreground="yellow",
+                                      background="black", width=15) .place(x=300, y=400)
+        ttk.Label(self, text='Tiradas').place(x=300, y=460)
+        self.lbltiradas = ttk.Label(self, textvariable=self.label2, foreground="red",
+                                    background="black") .place(x=300, y=480)
 
     # Bucle principal.
     def start(self):
