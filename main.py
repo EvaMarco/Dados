@@ -6,7 +6,7 @@ import random
 
 class MainApp(Tk):
     size = '475x565'
-    resultado = 0
+
 
     def __init__(self):
         # Para no tener que poner .ttk en todos lados.
@@ -16,37 +16,34 @@ class MainApp(Tk):
         self.title('Simulador de Dados')
         self.configure(bg='#ECECEC')
         self.resizable(0, 0)
+        self.resultado = 0
 
         # Creamos las variables del número de dados. Y le pedimos q nos de el valor para meterlo en el diccionario.
         self.dados4 = IntVar(value=0)
-        self.d4 = self.dados4.get()
+
 
         self.dados6 = IntVar(value=0)
-        self.d6 = self.dados6.get()
+
 
         self.dados8 = IntVar(value=0)
-        self.d8 = self.dados8.get()
 
         self.dados10 = IntVar(value=0)
-        self.d10 = self.dados10.get()
 
         self.dados12 = IntVar(value=0)
-        self.d12 = self.dados12.get()
 
         self.dados20 = IntVar(value=0)
-        self.d20 = self.dados20.get()
+
+        self.keys = [4, 6, 8, 10, 12, 20]
+        self.values = [self.dados4, self.dados6, self.dados8, self.dados10, self.dados12, self.dados20]
+
+        self.label = IntVar()
 
         # Aqui se pinta la pantalla, esta abajo más especificada.
         self.createlayout()
 
-        # El diccionario que no se actualiza, no se donde lo tengo que poner para que lo haga.
-        self.pooldados = {4: self.d4, 6: self.d6, 8: self.d8, 10: self.d10, 12: self.d12, 20: self.d20}
-
-
-
     def tirada(self, *args):
 
-        resultado = 0
+        self.pooldados = {k: v.get()for k, v in zip(self.keys, self.values)}
 
         for i in self.pooldados:
 
@@ -55,11 +52,18 @@ class MainApp(Tk):
 
                 for j in range(value):
                     number = random.randint(1, i)
-                    resultado += number
-        print(resultado)
+                    self.resultado += number
+                    print(number)
+        self.label.set(self.resultado)
+        print(self.resultado)
         print(self.pooldados)
-        return resultado
+        ttk.Label(self, text='Resultado').place(x=350, y=180)
 
+        self.lblresultado = ttk.Label(self, textvariable=self.label, foreground="yellow",
+                                      background="black") .place(x=350, y=200)
+
+        return self.resultado
+    
     def createlayout(self):
 
         # Aqui aparecen las etiquetas, las imagenes y demás.
@@ -101,6 +105,7 @@ class MainApp(Tk):
         self.boton = ttk.Button(self, text="Tirar", command=self.tirada).place(x=350, y=100)
 
         # La etiqueta donde quiero que salga el resultado pero no lo hace.
+        ttk.Label(self, text='Resultado').place(x=280, y=550)
 
         self.lblresultado = ttk.Label(self, textvariable=self.resultado, foreground="yellow",
                                       background="black") .place(x=350, y=200)
